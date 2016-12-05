@@ -1,0 +1,30 @@
+{% extends 'base_pith.html' %}
+{% block title %}Temperature{% endblock %}
+{% block content %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+{% for category, message in get_flashed_messages(with_categories=true) %}
+<div class="alert alert-{{ category }}">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{ message }}
+</div>
+{% endfor %}
+  <h1 class="page-header"><img src="/static/images/termo_logo_1.jpg" width="75" height="60"> Temperature:</h2>
+  
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Temperature</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for it in data['temperature'] %}
+        <tr>
+          <td>{{ it }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
