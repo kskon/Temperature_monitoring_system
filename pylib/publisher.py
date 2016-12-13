@@ -1,7 +1,9 @@
 import hashlib
 import os
 import random
+import serial 
 import time
+
 import unittest
 
 import zmq
@@ -30,7 +32,6 @@ class ZMQPublisher(object):
             self.socket.send_string(message)
         else:
             raise ValueError, 'receiver is not correct'
-
 
 class TestZMQPublisher(unittest.TestCase):
 

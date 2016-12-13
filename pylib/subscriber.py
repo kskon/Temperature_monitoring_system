@@ -2,16 +2,16 @@ import hashlib
 import os
 import random
 import threading
-from multiprocessing import Process, Queue
 import time
 import unittest
 
 import zmq
 
-from publisher import ZMQPublisher
+from multiprocessing import Process, Queue
+
+#from publisher import ZMQPublisher
 from settings import LOGGER as logger
 from settings import ZEROMQ_SERVER_HOST, ZEROMQ_SERVER_PORT
-
 
 class ZMQSubscriber(object):
     # multiprocessing Queue
@@ -25,28 +25,27 @@ class ZMQSubscriber(object):
         self.last_message = None
         self.queue = queue
 
-        for f in msg_filter:
-            self.socket.setsockopt(zmq.SUBSCRIBE, f)
-
+        self.socket.setsockopt(zmq.SUBSCRIBE, "TEMP")
         self.stop_sig = threading.Event()
         self.receive_thread = threading.Thread(target=self.receive)
         self.receive_thread.start()
 
     def receive(self):
+        while True:
         # logger.debug('ZMQSubscriber: receive')
-        while not self.stop_sig.is_set():
+            while not self.stop_sig.is_set():
             # logger.debug('ZMQSubscriber: trying to get something')
-            try:
-                message = self.socket.recv_string(zmq.NOBLOCK)
-                # logger.debug("ZMQSubscriber: queue={}".format(self.queue))
-                if self.queue:
-                    self.queue.put(message)
-                    # logger.debug("ZMQSubscriber put message to queue. {}".format(message))
-                self.last_message = message
-                logger.debug("ZMQSubscriber: data={}".format(self.last_message))
-            except zmq.ZMQError:
+                try:
+                    message = self.socket.recv(zmq.NOBLOCK)
+                    # logger.debug("ZMQSubscriber: queue={}".format(self.queue))
+                    if self.queue:
+                        self.queue.put(message)
+                        # logger.debug("ZMQSubscriber put message to queue. {}".format(message))
+                        self.last_message = message
+                        logger.debug("ZMQSubscriber: data={}".format(self.last_message))
+                except zmq.ZMQError:
                 # logger.debug('ZMQSubscriber: zmq.ZMQError')
-                pass
+                    pass
         logger.debug('ZMQSubscriber: Stop')
 
     def start(self):
@@ -78,7 +77,8 @@ def init_publisher():
     publisher.send(barcode, random.choice(['gui', 'all']))
     time.sleep(3)
     barcode = hashlib.sha256(os.urandom(30).encode('base64')[:-1]).hexdigest()[:10]
-    publisher.send(barcode, random.choice(['gui', 'all']))
+    publisher.send(barcode, random.choice(['gui', 'all']))  
+                  
 
 
 class TestZMQSubscriber(unittest.TestCase):
