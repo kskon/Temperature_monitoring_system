@@ -1,16 +1,17 @@
+import serial
 import hashlib
 import os
+import sys
 import random
-import serial 
 import time
-
 import unittest
 
 import zmq
+from multiprocessing import Process, Queue
 
 from settings import LOGGER as logger
 from settings import ZEROMQ_SERVER_HOST, ZEROMQ_SERVER_PORT
-
+serial = serial.Serial('/dev/cu.usbmodem1411', 9600, dsrdtr = 1, timeout=1)
 
 class ZMQPublisher(object):
     def __init__(self,
@@ -33,6 +34,26 @@ class ZMQPublisher(object):
         else:
             raise ValueError, 'receiver is not correct'
 
+
+def init_publisher():
+    publisher = ZMQPublisher()
+    i=0
+    while True:
+        try:
+            # Let's do something here.... read from com port or ...etc...
+            temp = serial.readline()
+            if i >=5:
+                publisher.send("TEMP " + str(temp))
+            else:
+                i+=1
+            barcode = hashlib.sha256(os.urandom(30).encode('base64')[:-1]).hexdigest()[:10]
+            #publisher.send(barcode, random.choice(['gui', 'all']))
+            time.sleep(0.1)
+        except KeyboardInterrupt:
+            logger.debug('init_publisher while loop is stopping')
+            break
+
+
 class TestZMQPublisher(unittest.TestCase):
 
     def test_stupid(self):
@@ -48,4 +69,13 @@ class TestZMQPublisher(unittest.TestCase):
                 self.assertTrue(False, 'something wrong')
 
 if __name__ == '__main__':
-    unittest.main(verbosity=7)
+    #unittest.main(verbosity=7)
+    try:
+        publisher_process = Process(target=init_publisher)
+        publisher_process.start()
+        logger.debug('publisher_process start')
+        publisher_process.join()
+    except KeyboardInterrupt:
+        logger.debug('publisher_process terminating')
+        publisher_process.terminate()
+        sys.exit()

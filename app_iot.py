@@ -106,14 +106,11 @@ def resource_update(rid=None):
 def do_subscribe():
     def save_results(queue, steps=1000):
         subscriber = ZMQSubscriber(queue=queue)
-        subscriber.receive() # ???????? 
         while True:
             if not queue.empty():
                 raw_msg = queue.get()
                 message = raw_msg[6::]
                 logger.debug('message through queue={}'.format(message))
-                print "Aaaaaaaaaaaaaaaaaaaaaa"
-                print message
                 dbproxy.add_tempr(message)
             else:
                 logger.debug('queue is empty')
@@ -132,4 +129,4 @@ if __name__ == '__main__':
     # db.create_all()
     # run_services()
     do_subscribe()
-    app.run('127.0.0.1', 8983, debug=True)
+    app.run('127.0.0.1', 8981, debug=True)

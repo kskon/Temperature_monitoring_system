@@ -40,21 +40,29 @@ class Temperature(Base):
         return "<Temperature({} {} {}|{})>".format(
             self.id, self.temperature,
             self.date, self.time)
-
+class Users(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key = True)
-    uname = Column(String(30))
+    email = Column(String(30))
     password = Column(String(256))
 
     def __init__(self,
-                uname = uname,
+                email = email,
                 password = password):
-        self.uname = uname
-        self,password = password
+        self.email = email
+        self.password = password
 
     def __repr__(self):
-        return "<Users({} {}|{})>".format(
-            self.id, self.uname, self.password)
+        return "<Users({} {}/{})>".format(
+            self.id, 
+            self.email, 
+            self.password)
+
+class Revers(Base):
+    __tablename__ = "revers"
+    id = Column(Integer, primary_key=True)
+    new_temperature = Column(String(10))
+
 
 class DbProxy(object):
 
