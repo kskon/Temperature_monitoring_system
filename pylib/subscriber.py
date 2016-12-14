@@ -36,7 +36,7 @@ class ZMQSubscriber(object):
             while not self.stop_sig.is_set():
             # logger.debug('ZMQSubscriber: trying to get something')
                 try:
-                    message = self.socket.recv(zmq.NOBLOCK)
+                    message = self.socket.recv_string(zmq.NOBLOCK)
                     # logger.debug("ZMQSubscriber: queue={}".format(self.queue))
                     if self.queue:
                         self.queue.put(message)

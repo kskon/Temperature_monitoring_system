@@ -83,8 +83,8 @@ def login():
 @app.route('/')
 # @login_required
 def temperature_list_page():
-    tempr = DbProxy()
-    #tempr.get_all()
+    dbproxy = DbProxy()
+    tempr = dbproxy.get_all()
     context = {'temperature': tempr}
     return render_template('index.html', data=context) 
 
@@ -106,15 +106,18 @@ def resource_update(rid=None):
 def do_subscribe():
     def save_results(queue, steps=1000):
         subscriber = ZMQSubscriber(queue=queue)
+        subscriber.receive() # ???????? 
         while True:
             if not queue.empty():
                 raw_msg = queue.get()
                 message = raw_msg[6::]
                 logger.debug('message through queue={}'.format(message))
+                print "Aaaaaaaaaaaaaaaaaaaaaa"
+                print message
                 dbproxy.add_tempr(message)
             else:
                 logger.debug('queue is empty')
-                time.sleep(0.2)
+                time.sleep(3)
     dbproxy = DbProxy()
     subscriber_queue = Queue()
     subscriber_process = Process(target=save_results, args=(subscriber_queue,))
@@ -128,7 +131,5 @@ if __name__ == '__main__':
     # db.drop_all()
     # db.create_all()
     # run_services()
-
-
     do_subscribe()
-    app.run('127.0.0.1', 8980, debug=True)
+    app.run('127.0.0.1', 8983, debug=True)

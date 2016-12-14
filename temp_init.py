@@ -11,7 +11,6 @@ def init_temp():
 	publisher = ZMQPublisher()
 	subscriber = ZMQSubscriber()
 	i=0
-
 	while True:
     	   temp = serial.readline()
     	   if i >=5:
@@ -35,10 +34,6 @@ if __name__ == '__main__':
 	try:
 		publisher_process = Process(target=init_temp)
 		publisher_process.start()
-
-     	#p = Process(target=pub)
-		#pp = Process(target=sub)
-		#p.start()
 	except (KeyboardInterrupt, SystemExit):
 		publisher_process.terminate()
 		sys.exit()
