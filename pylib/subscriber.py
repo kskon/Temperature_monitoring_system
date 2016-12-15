@@ -45,7 +45,7 @@ class ZMQSubscriber(object):
                 if self.queue:
                     self.queue.put(message)
                     # logger.debug("ZMQSubscriber put message to queue. {}".format(message))
-                self.last_message = message
+                self.last_message = message[10::]
                 logger.debug("ZMQSubscriber: data={}".format(self.last_message))
             except zmq.ZMQError:
                 # logger.debug('ZMQSubscriber: zmq.ZMQError')
@@ -71,14 +71,15 @@ def init_subscribe(queue):
             # Let's do something here.... read from queue and save to DB 
             if not queue.empty():
                 raw_message = queue.get()
-                message = raw_message[6::]
-                logger.debug('message through queue={}'.format(message))
+                message = raw_message[10::]
+                logger.debug('message through queue= {}'.format(message))
                 dbproxy.add_tempr(message)
                 # save to DB or....
                 #dbproxy.add_web_check(raw_message)
+                time.sleep(1)
             else:
                 logger.debug('queue is empty')
-                time.sleep(0.1)
+                time.sleep(1)
         except KeyboardInterrupt:
             subscriber.stop()
             break

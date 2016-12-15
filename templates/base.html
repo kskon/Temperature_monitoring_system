@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> 
     <title>Temperature monitoring system | {% block title %}{% endblock %}</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery.js/3.1.1/jquery.min.js"></script> 
 
     <!-- Bootstrap -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
@@ -16,7 +17,6 @@
     <link rel="stylesheet" href="/static/css/font-awesome.min.css">
 
 </head>
-
 <body>
 {% block navtop %}
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -38,14 +38,11 @@
   </div>
 </nav>
 {% endblock %}
-
 {% set active_page = active_page|default("index") %}
-
 {% set navigation_bar = [
     ('/', 'temperature', 'Temperature'),
     ('/help', 'help', 'Help'),
 ] -%}
-
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-3 col-md-2 sidebar">

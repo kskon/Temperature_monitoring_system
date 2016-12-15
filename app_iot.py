@@ -103,8 +103,8 @@ def resource_update(rid=None):
     flash("Item: ID=[{}] has been updated. {}".format(rid, request.form['status']))
     return redirect(url_for('resource_list_page'))
 
-def do_subscribe():
-    def save_results(queue, steps=1000):
+'''def do_subscribe():
+    #def save_results(queue, steps=1000):
         subscriber = ZMQSubscriber(queue=queue)
         while True:
             if not queue.empty():
@@ -114,11 +114,11 @@ def do_subscribe():
                 dbproxy.add_tempr(message)
             else:
                 logger.debug('queue is empty')
-                time.sleep(3)
+                time.sleep(1)
     dbproxy = DbProxy()
     subscriber_queue = Queue()
     subscriber_process = Process(target=save_results, args=(subscriber_queue,))
-    subscriber_process.start()
+    subscriber_process.start()'''
 
 @app.route('/help')
 def help_page():
@@ -128,5 +128,5 @@ if __name__ == '__main__':
     # db.drop_all()
     # db.create_all()
     # run_services()
-    do_subscribe()
-    app.run('127.0.0.1', 8981, debug=True)
+    #do_subscribe()
+    app.run('127.0.0.1', 8966, debug=True)
