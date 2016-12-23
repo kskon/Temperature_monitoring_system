@@ -35,8 +35,8 @@ class Temperature(Base):
         self.date_time = d
 
     def __repr__(self):
-        return "Temperature:{} {} {}".format(
-            self.id, self.temperature,
+        return "{} {}".format(
+            self.temperature,
             self.date_time)
 
 class Users(Base):

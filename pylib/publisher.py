@@ -47,7 +47,7 @@ def init_publisher():
             else:
                 i+=1
             barcode = hashlib.sha256(os.urandom(30).encode('base64')[:-1]).hexdigest()[:10]
-            #publisher.send(barcode, random.choice(['gui', 'all']))
+            #publisher.send(barcode, random.choice(['gui', 'all']))3
             time.sleep(0.1)
         except KeyboardInterrupt:
             logger.debug('init_publisher while loop is stopping')

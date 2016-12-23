@@ -11,18 +11,20 @@
   <h1 class="page-header"><img src="/static/images/termo_logo_1.jpg" width="65" height="60"> Temperature:</h2>
   <div class="table-responsive">
     <table class="table table-striped">
-      <thead>
+    <thead>
         <tr>
-          <th>Temperature list</th>  
+          <th>Temperature</th>
+          <th>Date/Time</th>
         </tr>
       </thead>
       <tbody>
       {% for it in data['temperature'] %}
         <tr>
-          <td>{{ it }}</td>
+          <td>{{ it.temperature }}</td>
+          <td>{{ it.date_time}}</td>
         </tr>
-      {% endfor %}
-      <body>      
+      {% endfor %}  
+      <tr>   
         <p id="content_p"></p>
         <script type="text/javascript">
         function show(){
@@ -37,8 +39,7 @@
     }
     setInerval(show(), 1000)
  </script>
- </body>
-
+    </tr>
       </tbody>
     </table>
   </div>

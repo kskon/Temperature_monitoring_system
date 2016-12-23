@@ -129,4 +129,4 @@ if __name__ == '__main__':
     # db.create_all()
     # run_services()
     #do_subscribe()
-    app.run('127.0.0.1', 8966, debug=True)
+    app.run('127.0.0.1', 8964, debug=True)

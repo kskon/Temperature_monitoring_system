@@ -7,13 +7,15 @@
 </head>
 <body>
 	Time:
-	<p id="content"></p>
+	<div class="content">Ждем ответа</div>
 <script type="text/javascript">
     	$.ajax({
-          url: "time.php",
+          url: "/",
+          type: "GET"
           cache: false,
-          success: function(html){
-          	$('#content').html(html);
+          success: function(html){$('#content').html(html);} - > success: function(data){
+            alert(data);
+           $('#content').html(data);}
           }
       	});
 </script>
