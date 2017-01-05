@@ -7,9 +7,6 @@ import zmq
 from flask import Flask
 from flask import render_template, redirect, url_for, request, flash, make_response
 from multiprocessing import Process, Queue
-
-from forms import LoginForm
-
 from pylib.subscriber import ZMQSubscriber
 
 
@@ -45,7 +42,6 @@ app.url_map.strict_slashes = False
 app.config['SESSION_TYPE'] = FLASK_SESSION_TYPE
 app.config['UPLOAD_FOLDER'] = FLASK_UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
-app.config.from_object('config') # ????
 api = Api(app)
 
 

@@ -23,23 +23,25 @@
           <td>{{ it.temperature }}</td>
           <td>{{ it.date_time}}</td>
         </tr>
-      {% endfor %}  
-      <tr>   
-        <p id="content_p"></p>
+      {% endfor %}    
         <script type="text/javascript">
-        function show(){
-        $.ajax({
-          type: "POST",
-          url: "index.html",
-          cache: false,
-          success: function(html){
-        $('#content_p').html(html);
-        }
-      });
-    }
-    setInerval(show(), 1000)
- </script>
-    </tr>
+        $(window).load(function () {
+          function show(){
+            $.ajax({
+              url: "http://127.0.0.1:8964/",
+              async: true,
+              cache: false,
+              error: function(request, status, error) {
+              alert(request.status);},
+              success: function(html){
+                var newcontent = $(html).find('.table-striped');
+                $('.table-responsive').html(newcontent);
+              }
+            });
+          }
+          setInterval(show, 1000);
+        });
+        </script>
       </tbody>
     </table>
   </div>
